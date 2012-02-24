@@ -14,12 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- *
- * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
- */
-package org.jboss.arquillian.container.glassfish.remote_3_1;
+package org.jboss.arquillian.container.glassfish.managed_3_1;
 
 import java.io.Serializable;
 

@@ -14,18 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- *
- * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
- */
 package org.jboss.arquillian.container.glassfish.managed_3_1;
+
+import java.io.File;
 
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.deployment.Validate;
 
+/**
+ * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
+ * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
+ */
 public class GlassFishManagedContainerConfiguration implements ContainerConfiguration {
 
+    /**
+     * The local GlassFish installation directory
+     */
+    private String glassfishHome = System.getenv("GLASSFISH_HOME");
+    
+    /**
+     * The GlassFish domain to use or the default domain if not specified
+     */
+    private String domain = null;
+
+    /**
+     * Show the output of the admin commands on the console
+     */
+    private boolean outputToConsole = false;
+    
+    /**
+     * Flag to start the server in debug mode using standard GlassFish debug port
+     */
+    private boolean debug = false;
+    
     /**
      * Glassfish Admin Console port.
      * Used to build the URL for the REST request.
@@ -70,6 +92,38 @@ public class GlassFishManagedContainerConfiguration implements ContainerConfigur
      * Authorised admin user password
      */
     private String remoteServerAdminPassword;
+
+    public String getGlassfishHome() {
+        return glassfishHome;
+    }
+
+    public void setGlassfishHome(String glassfishHome) {
+        this.glassfishHome = glassfishHome;
+    }
+    
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public boolean isOutputToConsole() {
+        return outputToConsole;
+    }
+
+    public void setOutputToConsole(boolean outputToConsole) {
+        this.outputToConsole = outputToConsole;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
 
     public String getRemoteServerAddress() {
         return remoteServerAddress;
@@ -135,12 +189,26 @@ public class GlassFishManagedContainerConfiguration implements ContainerConfigur
     public void setRemoteServerAdminPassword(String remoteServerAdminPassword) {
         this.remoteServerAdminPassword = remoteServerAdminPassword;
     }
+    
+    public File getAdminCliJar() {
+        return new File(getGlassfishHome() + "/glassfish/modules/admin-cli.jar");
+    }
 
     /**
      * Validates if current configuration is valid, that is if all required
      * properties are set and have correct values
      */
     public void validate() throws ConfigurationException {
+        Validate.notNull(getGlassfishHome(), "glassfishHome must be specified or the GLASSFISH_HOME environment variable must be set");
+        // FIXME this should be a more robust check
+        if (!getAdminCliJar().exists()) {
+            throw new IllegalArgumentException(getGlassfishHome() + " is not a valid GlassFish installation");
+        }
+        
+        if (getDomain() != null) {
+            Validate.configurationDirectoryExists(getGlassfishHome() + "/glassfish/domains/" + getDomain(), "Invalid domain: " + getDomain());
+        }
+        
        if(isRemoteServerAuthorisation())
        {
           Validate.notNull(getRemoteServerAdminUser(), "remoteServerAdminUser must be specified to use remoteServerAuthorisation");

@@ -12,6 +12,7 @@
 
     <container qualifier="glassfish" default="true">
         <configuration>
+            <property name="glassfishHome">target/glassfish3</property>
             <property name="remoteServerAddress">localhost</property>
             <property name="remoteServerHttpPort">8080</property>
             <property name="remoteServerAdminPort">4848</property>
@@ -20,6 +21,7 @@
 
     <container qualifier="glassfish-auth">
         <configuration>
+            <property name="glassfishHome">target/glassfish3</property>
             <property name="remoteServerAddress">localhost</property>
             <property name="remoteServerHttpPort">8080</property>
             <property name="remoteServerAdminPort">4848</property>

@@ -14,10 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- *
- * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
- */
 package org.jboss.arquillian.container.glassfish.managed_3_1;
 
 import java.io.File;
@@ -50,20 +46,26 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 /**
- * Glassfish v3.1 remote container using REST deployment.
+ * Glassfish 3.1 managed container using REST deployments
+ * 
+ * TODO:
+ * - ear deployment does not return context path in ProtocolMetaData
+ * - add support for JVM flags
+ * - add support for custom debug port
+ * - add support for deploying glassfish-resources.xml (requires custom cleanup)
  *
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
+ * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
-@SuppressWarnings({"HardcodedFileSeparator"})
 public class GlassFishManagedDeployableContainer implements DeployableContainer<GlassFishManagedContainerConfiguration> {
 
     private static final String APPLICATION = "/applications/application";
     private static final String LIST_SUB_COMPONENTS = "/applications/application/list-sub-components?id=";
     private static final String SUCCESS = "SUCCESS";
     private String adminBaseUrl;
-    private String applicationBaseUrl;
     private String deploymentName;
     private GlassFishManagedContainerConfiguration configuration;
+    private GlassFishServerControl serverControl;
 
     public Class<GlassFishManagedContainerConfiguration> getConfigurationClass() {
         return GlassFishManagedContainerConfiguration.class;
@@ -75,6 +77,7 @@ public class GlassFishManagedDeployableContainer implements DeployableContainer<
         }
 
         this.configuration = configuration;
+        this.serverControl = new GlassFishServerControl(configuration);
 
         final StringBuilder adminUrlBuilder = new StringBuilder();
 
@@ -88,22 +91,11 @@ public class GlassFishManagedDeployableContainer implements DeployableContainer<
                        .append(this.configuration.getRemoteServerAdminPort()).append("/management/domain");
 
         this.adminBaseUrl = adminUrlBuilder.toString();
-
-        final StringBuilder applicationUrlBuilder = new StringBuilder();
-
-        if (this.configuration.isRemoteServerHttps()) {
-            applicationUrlBuilder.append("https://");
-        } else {
-            applicationUrlBuilder.append("http://");
-        }
-
-        applicationUrlBuilder.append(this.configuration.getRemoteServerAddress()).append(":")
-                             .append(this.configuration.getRemoteServerHttpPort()).append("/");
-
-        this.applicationBaseUrl = applicationUrlBuilder.toString();
     }
 
     public void start() throws LifecycleException {
+        serverControl.start();
+        
         final String xmlResponse = prepareClient().get(String.class);
 
         try {
@@ -111,12 +103,12 @@ public class GlassFishManagedDeployableContainer implements DeployableContainer<
                 throw new LifecycleException("Server is not running");
             }
         } catch (XPathExpressionException e) {
-            throw new LifecycleException("Error verifying the sever is running", e);
+            throw new LifecycleException("Error verifying the server is running", e);
         }
     }
 
     public void stop() throws LifecycleException {
-       // NO-OP
+        serverControl.stop();
     }
 
     public ProtocolDescription getDefaultProtocol() {

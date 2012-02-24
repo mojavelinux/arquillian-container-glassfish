@@ -78,13 +78,23 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!-- enable tests when GlassFish is setup on Hudson server -->
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>setup-glassfish</id>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <tasks>
+                                <get src="http://download.java.net/glassfish/3.1/release/glassfish-3.1.zip" dest="${project.build.directory}" usetimestamp="true"/>
+                                <unzip src="${project.build.directory}/glassfish-3.1.zip" dest="${project.build.directory}"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> 
         </plugins>
     </build>
 

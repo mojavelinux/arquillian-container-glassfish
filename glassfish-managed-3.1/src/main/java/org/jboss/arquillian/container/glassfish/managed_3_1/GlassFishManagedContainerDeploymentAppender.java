@@ -14,11 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- *
- * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
- */
 package org.jboss.arquillian.container.glassfish.managed_3_1;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
@@ -39,7 +34,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class GlassFishManagedContainerDeploymentAppender implements AuxiliaryArchiveAppender
 {
-
    /**
     * Creates the enricher archive for the test.
     * @return Archive containing all the valid enrichers for the server.
