@@ -20,30 +20,10 @@
  */
 package org.jboss.arquillian.container.glassfish.remote_3_1;
 
-import org.jboss.arquillian.container.spi.ConfigurationException;
-import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
-import org.jboss.arquillian.container.spi.client.deployment.Validate;
-import org.jboss.arquillian.container.glassfish.remote_3_1.clientutils.GlassFishClient;
+import org.jboss.arquillian.container.glassfish.CommonGlassFishConfiguration;
 
-public class GlassFishRestConfiguration implements ContainerConfiguration
+public class GlassFishRestConfiguration extends CommonGlassFishConfiguration
 {
-	/**
-	 * Glassfish Admin Server (DAS) host address.
-	 * Used to build the URL for the REST request.
-	 */
-	private String adminHost = "localhost";
-	
-	/**
-	 * Glassfish Admin Console port.
-	 * Used to build the URL for the REST request.
-	 */
-	private int adminPort = 4848;
-	
-	/**
-	 * Flag indicating the administration url uses a secure connection.
-	 * Used to build the URL for the REST request.
-	 */
-	private boolean adminHttps = false;
 	
 	/**
 	 * @deprecated
@@ -51,41 +31,6 @@ public class GlassFishRestConfiguration implements ContainerConfiguration
 	 * Used to build the URL for the REST request.
 	 */
 	private int remoteServerHttpPort = 8080;
-	
-    /**
-     * Flag indicating the remote server requires an admin user and password. 
-     */
-    private boolean authorisation = false;
-    
-    /**
-     * Authorised admin user in the remote glassfish admin realm
-     */
-    private String adminUser;
-	
-    /**
-     * Authorised admin user password
-     */
-    private String adminPassword;
-	
-	/**
-	 * Specifies the target to which you are  deploying. 
-	 * 
-	 * Valid values are:
-	 * 	server
-	 *   	Deploys the component to the default Admin Server instance.
-	 *   	This is the default value.
-	 *   instance_name
-	 *   	Deploys the component to  a  particular  stand-alone
-	 *   	sever instance.
-	 *   cluster_name
-	 *   	Deploys the component to every  server  instance  in
-	 *   	the cluster. (Though Arquillion use only one instance
-	 *   	to run the test case.)
-	 * 
-	 * The domain name as a target is not a reasonable deployment 
-	 * senarion in case of testing. 
-	 */
-	private String target = GlassFishClient.ADMINSERVER;
 	
 	/**
 	 * A comma-separated list of library JAR files. Specify the
@@ -115,28 +60,12 @@ public class GlassFishRestConfiguration implements ContainerConfiguration
 	 */
 	private String type = null;
 	
-	
-	public String getAdminHost()
-	{
-		return adminHost;
-	}
-	
 	/**
 	 * @deprecated
 	 */
 	public void setRemoteServerAddress(String adminHost)
 	{
 		this.adminHost = adminHost;
-	}
-	
-	public void setAdminHost(String adminHost)
-	{
-		this.adminHost = adminHost;
-	}
-	
-	public int getAdminPort()
-	{
-		return adminPort;
 	}
 	
 	/**
@@ -147,25 +76,10 @@ public class GlassFishRestConfiguration implements ContainerConfiguration
 		this.adminPort = adminPort;
 	}
 	
-	public void setAdminPort(int adminPort)
-	{
-		this.adminPort = adminPort;
-	}
-	
-	public boolean isAdminHttps()
-	{
-		return adminHttps;
-	}
-	
 	/**
 	 * @deprecated
 	 */
 	public void setRemoteServerAdminHttps(boolean adminHttps)
-	{
-		this.adminHttps = adminHttps;
-	}
-	
-	public void setAdminHttps(boolean adminHttps)
 	{
 		this.adminHttps = adminHttps;
 	}
@@ -183,39 +97,6 @@ public class GlassFishRestConfiguration implements ContainerConfiguration
     public void setRemoteServerHttpPort(int remoteServerHttpPort) {
     	this.remoteServerHttpPort = remoteServerHttpPort;
     }
-	
-    public boolean isAuthorisation() {
-        return authorisation;
-    }
-	
-    public void setAuthorisation(boolean authorisation) {
-        this.authorisation = authorisation;
-    }
-	
-    public String getAdminUser() {
-        return adminUser;
-    }
-	
-    public void setAdminUser(String adminUser) {
-        this.setAuthorisation(true);
-        this.adminUser = adminUser;
-    }
-	
-    public String getAdminPassword() {
-        return adminPassword;
-    }
-	
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
-    }
-	
-	public String getTarget() {
-		return target; 
-	}
-	
-	public void setTarget(String target) {
-		this.target = target; 
-	}
 	
 	public String getLibraries() {
 		return libraries; 
@@ -240,16 +121,5 @@ public class GlassFishRestConfiguration implements ContainerConfiguration
 	public void setType(String type) {
 		this.type = type; 
 	}
-	
-    /**
-     * Validates if current configuration is valid, that is if all required
-     * properties are set and have correct values
-     */
-    public void validate() throws ConfigurationException {
-		if(isAuthorisation())
-		{
-			Validate.notNull(getAdminUser(), "adminUser must be specified to use authorisation");
-			Validate.notNull(getAdminPassword(), "adminPassword must be specified to use authorisation");
-		}
-    }
+
 }

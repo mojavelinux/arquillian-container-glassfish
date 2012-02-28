@@ -81,14 +81,14 @@ public class GlassFishManagedDeployableContainer implements DeployableContainer<
 
         final StringBuilder adminUrlBuilder = new StringBuilder();
 
-        if (this.configuration.isRemoteServerAdminHttps()) {
+        if (this.configuration.isAdminHttps()) {
             adminUrlBuilder.append("https://");
         } else {
             adminUrlBuilder.append("http://");
         }
 
-        adminUrlBuilder.append(this.configuration.getRemoteServerAddress()).append(":")
-                       .append(this.configuration.getRemoteServerAdminPort()).append("/management/domain");
+        adminUrlBuilder.append(this.configuration.getAdminHost()).append(":")
+                       .append(this.configuration.getAdminPort()).append("/management/domain");
 
         this.adminBaseUrl = adminUrlBuilder.toString();
     }
@@ -195,10 +195,10 @@ public class GlassFishManagedDeployableContainer implements DeployableContainer<
      */
     private WebResource.Builder prepareClient(String additionalResourceUrl) {
         final Client client = Client.create();
-        if (configuration.isRemoteServerAuthorisation()) {
+        if (configuration.isAuthorisation()) {
             client.addFilter(new HTTPBasicAuthFilter(
-                    configuration.getRemoteServerAdminUser(),
-                    configuration.getRemoteServerAdminPassword()));
+                    configuration.getAdminUser(),
+                    configuration.getAdminPassword()));
         }
         return client.resource(this.adminBaseUrl + additionalResourceUrl).accept(MediaType.APPLICATION_XML_TYPE);
     }
@@ -234,7 +234,7 @@ public class GlassFishManagedDeployableContainer implements DeployableContainer<
 
     private ProtocolMetaData parseForProtocolMetaData(String xmlResponse) throws XPathExpressionException {
         final ProtocolMetaData protocolMetaData = new ProtocolMetaData();
-        final HTTPContext httpContext = new HTTPContext(this.configuration.getRemoteServerAddress(),
+        final HTTPContext httpContext = new HTTPContext(this.configuration.getAdminHost(),
                 this.configuration.getRemoteServerHttpPort());
 
         final XPath xpath = XPathFactory.newInstance().newXPath();

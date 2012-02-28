@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.core.MediaType;
 
-import org.jboss.arquillian.container.glassfish.remote_3_1.clientutils.GlassFishClient;
-import org.jboss.arquillian.container.glassfish.remote_3_1.clientutils.GlassFishClientException;
-import org.jboss.arquillian.container.glassfish.remote_3_1.clientutils.GlassFishClientService;
+import org.jboss.arquillian.container.glassfish.clientutils.GlassFishClient;
+import org.jboss.arquillian.container.glassfish.clientutils.GlassFishClientException;
+import org.jboss.arquillian.container.glassfish.clientutils.GlassFishClientService;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
 import org.jboss.arquillian.container.spi.client.container.DeploymentException;
 import org.jboss.arquillian.container.spi.client.container.LifecycleException;
