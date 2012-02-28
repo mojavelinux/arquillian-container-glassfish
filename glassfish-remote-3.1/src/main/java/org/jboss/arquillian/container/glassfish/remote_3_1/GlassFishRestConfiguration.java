@@ -33,34 +33,6 @@ public class GlassFishRestConfiguration extends CommonGlassFishConfiguration
 	private int remoteServerHttpPort = 8080;
 	
 	/**
-	 * A comma-separated list of library JAR files. Specify the
-	 * library  JAR  files by their relative or absolute paths.
-	 * Specify relative paths relative to domain-dir/lib/applibs.
-	 *  
-	 * The libraries are made available to the application in 
-	 * the order specified.
-	 */
-	private String libraries = null;
-	
-	/**
-	 * Optional keyword-value  pairs  that  specify  additional
-	 * properties  for the deployment. The available properties
-	 * are determined by the implementation  of  the  component
-	 * that  is  being deployed or redeployed.
-	 */
-	private String properties = null;
-	
-	/**
-	 * The packaging archive type of the component that is
-	 * being deployed. Only possible values is: osgi
-	 * 
-	 * The component is packaged as an OSGi Alliance bundle.
-	 * The type option is optional. If the component is packaged
-	 * as a regular archive, omit this option.
-	 */
-	private String type = null;
-	
-	/**
 	 * @deprecated
 	 */
 	public void setRemoteServerAddress(String adminHost)
@@ -97,29 +69,5 @@ public class GlassFishRestConfiguration extends CommonGlassFishConfiguration
     public void setRemoteServerHttpPort(int remoteServerHttpPort) {
     	this.remoteServerHttpPort = remoteServerHttpPort;
     }
-	
-	public String getLibraries() {
-		return libraries; 
-	}
-	
-	public void setLibraries(String library) {
-		this.libraries = library; 
-	}
-	
-	public String getProperties() {
-		return properties; 
-	}
-	
-	public void setProperties(String properties) {
-		this.properties = properties; 
-	}
-	
-	public String getType() {
-		return this.type;
-	}
-	
-	public void setType(String type) {
-		this.type = type; 
-	}
 
 }

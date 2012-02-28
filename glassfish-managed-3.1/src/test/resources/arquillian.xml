@@ -14,7 +14,6 @@
         <configuration>
             <property name="glassfishHome">target/glassfish3</property>
             <property name="adminHost">localhost</property>
-            <property name="remoteServerHttpPort">8080</property>
             <property name="adminPort">4848</property>
         </configuration>
     </container>
@@ -23,7 +22,6 @@
         <configuration>
             <property name="glassfishHome">target/glassfish3</property>
             <property name="adminHost">localhost</property>
-            <property name="remoteServerHttpPort">8080</property>
             <property name="adminPort">4848</property>
             <property name="adminUser">admin</property>
             <property name="adminPassword">admin</property>
