@@ -40,6 +40,7 @@ import javax.xml.stream.XMLStreamReader;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.CsrfProtectionFilter;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.multipart.FormDataMultiPart;
@@ -141,6 +142,7 @@ public class GlassFishClientUtil {
     private WebResource.Builder prepareClient(String additionalResourceUrl) 
     {
     	final Client client = Client.create();
+    	client.addFilter(new CsrfProtectionFilter());
         if (configuration.isAuthorisation()) {
             client.addFilter(new HTTPBasicAuthFilter(
 													 configuration.getAdminUser(),

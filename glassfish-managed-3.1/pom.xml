@@ -15,7 +15,7 @@
     <description>GlassFish 3.1 Managed Container integration for the Arquillian Project</description>
 
     <properties>
-        <version.glassfish>3.1.1</version.glassfish>
+        <version.glassfish>3.1.2</version.glassfish>
     </properties>
 
     <dependencies>
