@@ -183,10 +183,10 @@ public class GlassFishClientUtil {
 			
 	    } else if (status.getReasonPhrase() == "Not Found") {
 	    	// the REST resource can not be found (for optional resources it can be O.K.)
-	    	message += " [satus: " + status.getFamily() + " reason: " + status.getReasonPhrase() +"]";
+	    	message += " [status: " + status.getFamily() + " reason: " + status.getReasonPhrase() +"]";
 	        log.warning(message);
 	    } else {
-	    	message += " [satus: " + status.getFamily() + " reason: " + status.getReasonPhrase() +"]";
+	    	message += " [status: " + status.getFamily() + " reason: " + status.getReasonPhrase() +"]";
 	    	log.severe(message);
 	    	throw new ContainerException(message);
 	    }
